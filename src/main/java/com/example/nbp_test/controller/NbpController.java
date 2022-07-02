@@ -14,7 +14,7 @@ public class NbpController {
         this.nbpService = nbpService;
     }
 
-    @GetMapping("/data/{currency}/{days}")
+    @GetMapping("/data/{currency}")
     public ResponseEntity<AverageRate> getData(@PathVariable String currency, @RequestParam int days) {
         double value = nbpService.getAverageRateForPeriod(currency, days);
         return ResponseEntity.ok(new AverageRate(currency, days, value));
