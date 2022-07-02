@@ -3,7 +3,9 @@ package com.example.nbp_test.service;
 import com.example.nbp_test.Repository.nbpRepository;
 import com.example.nbp_test.model.LogRecord;
 import com.example.nbp_test.model.Root;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
@@ -20,11 +22,20 @@ public class NbpService {
     }
 
     public double getAverageRateForPeriod(String currency, int days) {
-        var result = rest.getForEntity("http://api.nbp.pl/api/exchangerates/rates/A/" + currency + "/last/" + days + "/?format=json", Root.class);
-        var currency_root = result.getBody();
-        var averageRate = calculateAverage(currency_root);
-        logToDatabase(currency, days, averageRate );
-        return averageRate;
+        try {
+            var result = rest.getForEntity("http://api.nbp.pl/api/exchangerates/rates/A/" + currency + "/last/" + days + "/?format=json", Root.class);
+
+            var currency_root = result.getBody();
+            var averageRate = calculateAverage(currency_root);
+            logToDatabase(currency, days, averageRate );
+            return averageRate;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+
     }
 
     private double calculateAverage(Root currency_root) {

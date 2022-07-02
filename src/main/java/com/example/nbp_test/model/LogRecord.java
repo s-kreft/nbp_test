@@ -1,5 +1,8 @@
 package com.example.nbp_test.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,11 +11,13 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
+@ApiModel(description = "LogRecord")
 public class LogRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ApiModelProperty(value = "Currency code")
     private String currency;
     private int days;
     private double exchange;
